@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="10dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivImageFilmItem"
+        android:layout_width="150dp"
+        android:layout_height="150dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="vertical"
+        android:layout_marginLeft="8dp">
+        <TextView
+            android:id="@+id/tvTitleFilmItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="title"/>
+
+        <TextView
+            android:id="@+id/tvDirectorFilmItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="director"
+            android:layout_marginTop="15dp"/>
+
+        <TextView
+            android:id="@+id/tvDateFilmItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="date"
+            android:layout_marginTop="15dp"/>
+    </LinearLayout>
+
+</LinearLayout>
