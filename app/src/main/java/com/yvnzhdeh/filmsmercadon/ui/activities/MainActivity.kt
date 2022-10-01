@@ -4,8 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
-import androidx.fragment.app.viewModels
-import com.yvnzhdeh.filmsmercadon.R
 import com.yvnzhdeh.filmsmercadon.data.repositories.FilmRepository
 import com.yvnzhdeh.filmsmercadon.data.repositories.GetFilmsRoomRepository
 import com.yvnzhdeh.filmsmercadon.data.repositories.SaveListFilmsInRoomRepository
@@ -14,12 +12,8 @@ import com.yvnzhdeh.filmsmercadon.data.usecases.GetFilmsUseCase
 import com.yvnzhdeh.filmsmercadon.data.usecases.SaveListFilmsInRoomUseCase
 import com.yvnzhdeh.filmsmercadon.databinding.ActivityMainBinding
 import com.yvnzhdeh.filmsmercadon.ui.fragments.DetailFilmFragment
-import com.yvnzhdeh.filmsmercadon.model.domain.Film
-import com.yvnzhdeh.filmsmercadon.ui.fragments.DetailFilmFragment
 import com.yvnzhdeh.filmsmercadon.ui.fragments.ListFilmsFragment
 import com.yvnzhdeh.filmsmercadon.ui.viewmodels.MainActivityViewModel
-import dagger.hilt.android.HiltAndroidApp
-import java.util.*
 import javax.inject.Inject
 
 

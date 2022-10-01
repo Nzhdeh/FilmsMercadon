@@ -9,7 +9,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.squareup.picasso.Picasso
 import com.yvnzhdeh.filmsmercadon.data.repositories.FilmRepository
+import com.yvnzhdeh.filmsmercadon.data.repositories.GetFilmsRoomRepository
+import com.yvnzhdeh.filmsmercadon.data.repositories.SaveListFilmsInRoomRepository
+import com.yvnzhdeh.filmsmercadon.data.usecases.GetFilmsRoomUseCase
 import com.yvnzhdeh.filmsmercadon.data.usecases.GetFilmsUseCase
+import com.yvnzhdeh.filmsmercadon.data.usecases.SaveListFilmsInRoomUseCase
 import com.yvnzhdeh.filmsmercadon.databinding.FragmentDetailFilmBinding
 import com.yvnzhdeh.filmsmercadon.ui.viewmodels.MainActivityViewModel
 import javax.inject.Inject
@@ -26,7 +30,19 @@ class DetailFilmFragment : Fragment() {
     private var getFilmsUseCase: GetFilmsUseCase = GetFilmsUseCase(filmRepository)
 
     @Inject
-    private var viewModelfactory: MainActivityViewModel.Factory = MainActivityViewModel.Factory(getFilmsUseCase)
+    private var saveListFilmsInRoomRepository: SaveListFilmsInRoomRepository = SaveListFilmsInRoomRepository()
+
+    @Inject
+    private var saveListFilmsInRoomUseCase: SaveListFilmsInRoomUseCase = SaveListFilmsInRoomUseCase(saveListFilmsInRoomRepository)
+
+    @Inject
+    private var getFilmsRoomRepository: GetFilmsRoomRepository = GetFilmsRoomRepository()
+
+    @Inject
+    private var getFilmsRoomUseCase: GetFilmsRoomUseCase = GetFilmsRoomUseCase(getFilmsRoomRepository)
+
+    @Inject
+    private var viewModelfactory: MainActivityViewModel.Factory = MainActivityViewModel.Factory(getFilmsUseCase, saveListFilmsInRoomUseCase, getFilmsRoomUseCase)
 
     private val viewModel: MainActivityViewModel by viewModels { viewModelfactory }
 
@@ -36,6 +52,7 @@ class DetailFilmFragment : Fragment() {
     ): View? {
         _binding = FragmentDetailFilmBinding.inflate(inflater, container, false)
 
+        viewModel.context = requireContext()
         val itemSelected = viewModel.itemListFilmsClicked.value
 
         Picasso.with(context).load(itemSelected?.image).into(binding.ivItemClicked)

@@ -3,6 +3,7 @@ package com.yvnzhdeh.filmsmercadon.ui.viewmodels
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.*
+import com.yvnzhdeh.filmsmercadon.data.usecases.DeleteRoomDBUseCase
 import com.yvnzhdeh.filmsmercadon.data.usecases.GetFilmsRoomUseCase
 import com.yvnzhdeh.filmsmercadon.data.usecases.GetFilmsUseCase
 import com.yvnzhdeh.filmsmercadon.data.usecases.SaveListFilmsInRoomUseCase
@@ -49,7 +50,10 @@ class MainActivityViewModel (private val getFilmsUseCase: GetFilmsUseCase,
     private fun saveFilmsInRoom()
     {
         viewModelScope.launch(Dispatchers.IO) {
-            listsAllFilms.value?.let { saveListFilmsInRoomUseCase.saveListFilmsInRoom(it,context) }
+            listsAllFilms.value?.let {
+                saveListFilmsInRoomUseCase.saveListFilmsInRoom(it,context)
+                getFilmsRoom()
+            }
         }
     }
 
@@ -65,5 +69,19 @@ class MainActivityViewModel (private val getFilmsUseCase: GetFilmsUseCase,
     fun changeItemClicked(itemClicked: Film)
     {
         this.itemListFilmsClicked.value = itemClicked
+    }
+
+    fun deleteBBDD()
+    {
+        viewModelScope.launch(Dispatchers.IO) {
+            val deleteRoomDBUseCase: DeleteRoomDBUseCase = DeleteRoomDBUseCase()
+            deleteRoomDBUseCase.deleteRoomDB(context)
+            listsAllFilmsRoom.postValue(listOf())
+        }
+
+    }
+
+    fun updateBBDD(){
+        getAllFilms()
     }
 }

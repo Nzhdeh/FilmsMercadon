@@ -6,8 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.activity.viewModels
+import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,7 +18,6 @@ import com.yvnzhdeh.filmsmercadon.data.usecases.GetFilmsRoomUseCase
 import com.yvnzhdeh.filmsmercadon.data.usecases.GetFilmsUseCase
 import com.yvnzhdeh.filmsmercadon.data.usecases.SaveListFilmsInRoomUseCase
 import com.yvnzhdeh.filmsmercadon.databinding.FragmentListFilmsBinding
-import com.yvnzhdeh.filmsmercadon.model.domain.Film
 import com.yvnzhdeh.filmsmercadon.ui.adapters.ListFilmsAdapter
 import com.yvnzhdeh.filmsmercadon.ui.viewmodels.MainActivityViewModel
 import javax.inject.Inject
@@ -71,6 +69,11 @@ class ListFilmsFragment : Fragment() {
             if (!it.isNullOrEmpty())
             {
                 binding.progressBar.visibility = View.GONE
+                binding.ivMenuOptions.visibility = View.VISIBLE
+                binding.tvError.visibility = View.GONE
+            }
+            else{
+                binding.tvError.visibility = View.VISIBLE
             }
             val recyclerView: RecyclerView = binding.rvListFilms
             recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
@@ -78,5 +81,30 @@ class ListFilmsFragment : Fragment() {
                 viewModel.changeItemClicked(film)
             }
         }
+
+        binding.ivMenuOptions.setOnClickListener {
+            showMenu(it)
+        }
+    }
+
+    private fun showMenu(v: View){
+        val popMenu = PopupMenu(requireContext(), v)
+        popMenu.inflate(R.menu.menu_options)
+        popMenu.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.delete -> {
+                    viewModel.deleteBBDD()
+                    true
+                }
+                R.id.update -> {
+                    viewModel.updateBBDD()
+                    true
+                }
+                else -> {
+                    false
+                }
+            }
+        }
+        popMenu.show()
     }
 }
