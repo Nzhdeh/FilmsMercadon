@@ -13,7 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yvnzhdeh.filmsmercadon.R
 import com.yvnzhdeh.filmsmercadon.data.repositories.FilmRepository
+import com.yvnzhdeh.filmsmercadon.data.repositories.GetFilmsRoomRepository
+import com.yvnzhdeh.filmsmercadon.data.repositories.SaveListFilmsInRoomRepository
+import com.yvnzhdeh.filmsmercadon.data.usecases.GetFilmsRoomUseCase
 import com.yvnzhdeh.filmsmercadon.data.usecases.GetFilmsUseCase
+import com.yvnzhdeh.filmsmercadon.data.usecases.SaveListFilmsInRoomUseCase
 import com.yvnzhdeh.filmsmercadon.databinding.FragmentListFilmsBinding
 import com.yvnzhdeh.filmsmercadon.model.domain.Film
 import com.yvnzhdeh.filmsmercadon.ui.adapters.ListFilmsAdapter
@@ -33,7 +37,20 @@ class ListFilmsFragment : Fragment() {
     private var getFilmsUseCase: GetFilmsUseCase = GetFilmsUseCase(filmRepository)
 
     @Inject
-    private var viewModelfactory: MainActivityViewModel.Factory = MainActivityViewModel.Factory(getFilmsUseCase)
+    private var saveListFilmsInRoomRepository: SaveListFilmsInRoomRepository = SaveListFilmsInRoomRepository()
+
+    @Inject
+    private var saveListFilmsInRoomUseCase: SaveListFilmsInRoomUseCase = SaveListFilmsInRoomUseCase(saveListFilmsInRoomRepository)
+
+    @Inject
+    private var getFilmsRoomRepository: GetFilmsRoomRepository = GetFilmsRoomRepository()
+
+    @Inject
+    private var getFilmsRoomUseCase: GetFilmsRoomUseCase = GetFilmsRoomUseCase(getFilmsRoomRepository)
+
+    @Inject
+    private var viewModelfactory: MainActivityViewModel.Factory = MainActivityViewModel.Factory(getFilmsUseCase, saveListFilmsInRoomUseCase, getFilmsRoomUseCase)
+
     private val viewModel: MainActivityViewModel by viewModels { viewModelfactory }
 
     override fun onCreateView(
@@ -48,7 +65,9 @@ class ListFilmsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.listsAllFilms.observe(viewLifecycleOwner){
+        viewModel.context = requireContext()
+        viewModel.getFilmsRoom()
+        viewModel.listsAllFilmsRoom.observe(viewLifecycleOwner){
             Log.d("","$it")
             val recyclerView: RecyclerView = binding.rvListFilms
             recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
