@@ -2,10 +2,8 @@ package com.yvnzhdeh.filmsmercadon.ui.viewmodels
 
 import android.util.Log
 import androidx.lifecycle.*
-import com.yvnzhdeh.filmsmercadon.data.repositories.FilmRepository
 import com.yvnzhdeh.filmsmercadon.data.usecases.GetFilmsUseCase
 import com.yvnzhdeh.filmsmercadon.model.domain.Film
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,25 +18,26 @@ class MainActivityViewModel (private val getFilmsUseCase: GetFilmsUseCase): View
     }
 
     val listsAllFilms: MutableLiveData<List<Film>> = MutableLiveData(listOf())
-
+    var itemListFilmsClicked: MutableLiveData<Film> = MutableLiveData()
 
     init {
         getAllFilms()
     }
 
-    private fun getAllFilms(): List<Film>?
+    private fun getAllFilms()
     {
-        var list: List<Film>? = listOf()
         viewModelScope.launch(Dispatchers.IO) {
-            list = getFilmsUseCase.getAllFilms()
-            Log.d("","$list")
-            listsAllFilms.postValue(list)
+            listsAllFilms.postValue(getFilmsUseCase.getAllFilms())
         }
-        return list
     }
 
     private fun saveFilmsInRoom(listFilms: List<Film>)
     {
 
+    }
+
+    fun changeItemClicked(itemClicked: Film)
+    {
+        this.itemListFilmsClicked.value = itemClicked
     }
 }

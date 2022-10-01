@@ -34,6 +34,7 @@ class ListFilmsFragment : Fragment() {
 
     @Inject
     private var viewModelfactory: MainActivityViewModel.Factory = MainActivityViewModel.Factory(getFilmsUseCase)
+
     private val viewModel: MainActivityViewModel by viewModels { viewModelfactory }
 
     override fun onCreateView(
@@ -48,14 +49,16 @@ class ListFilmsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.listsAllFilms.observe(viewLifecycleOwner){
-            Log.d("","$it")
+        viewModel.listsAllFilms.observe(requireActivity()){
+            if (!it.isNullOrEmpty())
+            {
+                binding.progressBar.visibility = View.GONE
+            }
             val recyclerView: RecyclerView = binding.rvListFilms
             recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-            recyclerView.adapter =
-                ListFilmsAdapter(it){
-                    Toast.makeText(requireContext(),"kfhsdkfgkdfg", Toast.LENGTH_LONG).show()
-                }
+            recyclerView.adapter = ListFilmsAdapter(it) { film ->
+                viewModel.changeItemClicked(film)
+            }
         }
     }
 }
