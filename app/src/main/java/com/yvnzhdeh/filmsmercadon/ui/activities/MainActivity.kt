@@ -3,6 +3,8 @@ package com.yvnzhdeh.filmsmercadon.ui.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.yvnzhdeh.filmsmercadon.data.repositories.FilmRepository
 import com.yvnzhdeh.filmsmercadon.data.repositories.GetFilmsRoomRepository
 import com.yvnzhdeh.filmsmercadon.data.repositories.SaveListFilmsInRoomRepository
@@ -51,10 +53,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         viewModel.context = this
 
-        if (viewModel.firstTime)
+        if (viewModel.isFirstExecution)
         {
             transition.add(binding.flContainer.id, ListFilmsFragment(),"ListFilmsFragment").commitAllowingStateLoss()
-            viewModel.firstTime = false
+            //transition.add(binding.flContainer.id, DetailFilmFragment(),"DetailFilmFragment").commitAllowingStateLoss()//para poder navegar a los detalles ya que el onClick no me funciona porque el observer que tengo más abajo no detecta el cambio de LiveData
+            viewModel.isFirstExecution = false
         }
 
 

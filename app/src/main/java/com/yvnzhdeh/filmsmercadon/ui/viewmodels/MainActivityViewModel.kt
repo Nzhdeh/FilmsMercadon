@@ -25,8 +25,8 @@ class MainActivityViewModel (private val getFilmsUseCase: GetFilmsUseCase,
     private val listsAllFilms: MutableLiveData<List<Film>> = MutableLiveData(listOf())
     val listsAllFilmsRoom: MutableLiveData<List<Film>> = MutableLiveData(listOf())
     @SuppressLint("StaticFieldLeak")
-    lateinit var context: Context
-    var firstTime = true
+    var context: Context? = null
+    var isFirstExecution = true
     var itemListFilmsClicked: MutableLiveData<Film> = MutableLiveData()
 
 
@@ -49,7 +49,7 @@ class MainActivityViewModel (private val getFilmsUseCase: GetFilmsUseCase,
     {
         viewModelScope.launch(Dispatchers.IO) {
             listsAllFilms.value?.let {
-                saveListFilmsInRoomUseCase.saveListFilmsInRoom(it,context)
+                saveListFilmsInRoomUseCase.saveListFilmsInRoom(it,context!!)
                 getFilmsRoom()
             }
         }
@@ -59,7 +59,7 @@ class MainActivityViewModel (private val getFilmsUseCase: GetFilmsUseCase,
     fun getFilmsRoom()
     {
         viewModelScope.launch(Dispatchers.IO){
-            val list = getFilmsRoomUseCase.getListFilmsInRoom(context)
+            val list = getFilmsRoomUseCase.getListFilmsInRoom(context!!)
             listsAllFilmsRoom.postValue(list)
         }
     }
@@ -73,7 +73,7 @@ class MainActivityViewModel (private val getFilmsUseCase: GetFilmsUseCase,
     {
         viewModelScope.launch(Dispatchers.IO) {
             val deleteRoomDBUseCase = DeleteRoomDBUseCase()
-            deleteRoomDBUseCase.deleteRoomDB(context)
+            deleteRoomDBUseCase.deleteRoomDB(context!!)
             listsAllFilmsRoom.postValue(listOf())
         }
 
@@ -86,7 +86,7 @@ class MainActivityViewModel (private val getFilmsUseCase: GetFilmsUseCase,
     fun updateFilm(selectedFilm: Film){
         viewModelScope.launch(Dispatchers.IO) {
             val updateFilmSelectedUseCase = UpdateFilmSelectedUseCase()
-            updateFilmSelectedUseCase.updateFilmSelected(context, selectedFilm)
+            updateFilmSelectedUseCase.updateFilmSelected(context!!, selectedFilm)
         }
     }
 }
