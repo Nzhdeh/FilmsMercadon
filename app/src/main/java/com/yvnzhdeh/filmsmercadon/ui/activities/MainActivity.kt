@@ -2,7 +2,6 @@ package com.yvnzhdeh.filmsmercadon.ui.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import com.yvnzhdeh.filmsmercadon.data.repositories.FilmRepository
 import com.yvnzhdeh.filmsmercadon.data.repositories.GetFilmsRoomRepository
@@ -51,11 +50,17 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel.context = this
-        transition.add(binding.flContainer.id, ListFilmsFragment(),"FragemntMenu").commit()
+
+        if (viewModel.firstTime)
+        {
+            transition.add(binding.flContainer.id, ListFilmsFragment(),"ListFilmsFragment").commitAllowingStateLoss()
+            viewModel.firstTime = false
+        }
+
 
         viewModel.itemListFilmsClicked.observe(this) {
             transition = supportFragmentManager.beginTransaction()
-            transition.replace(binding.flContainer.id, DetailFilmFragment(),"DetailFilmFragment").addToBackStack(null).commit()
+            transition.replace(binding.flContainer.id, DetailFilmFragment(),"DetailFilmFragment").addToBackStack("ListFilmsFragment").commitAllowingStateLoss()
         }
     }
 }

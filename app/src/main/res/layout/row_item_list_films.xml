@@ -29,20 +29,20 @@
                 android:id="@+id/tvTitleFilmItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="title"/>
+                android:text="@string/text_title"/>
 
             <TextView
                 android:id="@+id/tvDirectorFilmItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="director"
+                android:text="@string/text_director"
                 android:layout_marginTop="15dp"/>
 
             <TextView
                 android:id="@+id/tvDateFilmItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="date"
+                android:text="@string/text_date"
                 android:layout_marginTop="15dp"/>
         </LinearLayout>
     </LinearLayout>

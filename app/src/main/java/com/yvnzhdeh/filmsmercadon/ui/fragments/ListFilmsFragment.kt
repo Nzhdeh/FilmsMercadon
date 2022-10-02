@@ -1,7 +1,6 @@
 package com.yvnzhdeh.filmsmercadon.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +25,7 @@ import javax.inject.Inject
 class ListFilmsFragment : Fragment() {
 
     private lateinit var _binding: FragmentListFilmsBinding
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     @Inject
     private var filmRepository: FilmRepository = FilmRepository()
@@ -54,7 +53,7 @@ class ListFilmsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentListFilmsBinding.inflate(inflater, container, false)
 
         return binding.root
@@ -76,7 +75,7 @@ class ListFilmsFragment : Fragment() {
                 binding.tvError.visibility = View.VISIBLE
             }
             val recyclerView: RecyclerView = binding.rvListFilms
-            recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+            recyclerView.layoutManager = LinearLayoutManager(requireContext())
             recyclerView.adapter = ListFilmsAdapter(it) { film ->
                 viewModel.changeItemClicked(film)
             }

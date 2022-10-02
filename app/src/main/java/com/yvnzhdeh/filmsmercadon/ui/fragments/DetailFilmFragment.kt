@@ -1,11 +1,11 @@
 package com.yvnzhdeh.filmsmercadon.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.squareup.picasso.Picasso
 import com.yvnzhdeh.filmsmercadon.data.repositories.FilmRepository
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class DetailFilmFragment : Fragment() {
 
     private lateinit var _binding: FragmentDetailFilmBinding
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     @Inject
     private var filmRepository: FilmRepository = FilmRepository()
@@ -49,7 +49,7 @@ class DetailFilmFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentDetailFilmBinding.inflate(inflater, container, false)
 
         viewModel.context = requireContext()
@@ -62,10 +62,23 @@ class DetailFilmFragment : Fragment() {
         binding.etOriginalTitleItemClicked.setText(itemSelected?.originalTitle)
         binding.etOriginalTitleRomanisedItemClicked.setText(itemSelected?.originalTitleRomanised)
 
-        val hghghghg = binding.etTitleItemClicked.text
-
         binding.btnUpdate.setOnClickListener {
-            //TODO update
+            itemSelected?.title = binding.etTitleItemClicked.text.toString()
+            itemSelected?.director = binding.etDirectorItemClicked.text.toString()
+            itemSelected?.releaseDate = binding.etDateItemClicked.text.toString()
+            itemSelected?.originalTitle = binding.etOriginalTitleItemClicked.text.toString()
+            itemSelected?.originalTitleRomanised = binding.etOriginalTitleRomanisedItemClicked.text.toString()
+
+            if (itemSelected != null) {
+                try {
+                    viewModel.updateFilm(itemSelected)
+                    Toast.makeText(requireContext(),"Se ha actualizado correctamente",Toast.LENGTH_SHORT).show()
+                }
+                catch (e: Exception)
+                {
+                    Toast.makeText(requireContext(),"Ha habido un error",Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         return binding.root

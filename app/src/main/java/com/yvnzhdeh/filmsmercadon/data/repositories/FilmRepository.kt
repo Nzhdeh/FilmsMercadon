@@ -1,7 +1,5 @@
 package com.yvnzhdeh.filmsmercadon.data.repositories
 
-import android.util.Log
-import com.google.gson.Gson
 import com.yvnzhdeh.filmsmercadon.data.services.FilmsService
 import com.yvnzhdeh.filmsmercadon.model.domain.Film
 import retrofit2.Response

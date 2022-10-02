@@ -5,13 +5,14 @@ import androidx.room.Room
 import com.yvnzhdeh.filmsmercadon.data.bbdd.FilmsDB
 import com.yvnzhdeh.filmsmercadon.model.domain.Film
 
-class GetFilmsRoomRepository {
-
-    fun getListFilmsInRoom(context: Context): List<Film> {
+class UpdateFilmSelectedRepository
+{
+    suspend fun updateFilmSelected(context: Context, selectedFilm: Film)
+    {
         val db = Room.databaseBuilder(
             context.applicationContext,
             FilmsDB::class.java, "FilmsDB"
         ).build()
-        return db.filmDao().getAllFilms()
+        db.filmDao().updateFilm(selectedFilm)
     }
 }
