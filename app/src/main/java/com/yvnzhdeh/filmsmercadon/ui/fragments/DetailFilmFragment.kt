@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.squareup.picasso.Picasso
 import com.yvnzhdeh.filmsmercadon.data.repositories.FilmRepository
 import com.yvnzhdeh.filmsmercadon.data.repositories.GetFilmsRoomRepository
@@ -41,10 +42,7 @@ class DetailFilmFragment : Fragment() {
     @Inject
     private var getFilmsRoomUseCase: GetFilmsRoomUseCase = GetFilmsRoomUseCase(getFilmsRoomRepository)
 
-    @Inject
-    private var viewModelfactory: MainActivityViewModel.Factory = MainActivityViewModel.Factory(getFilmsUseCase, saveListFilmsInRoomUseCase, getFilmsRoomUseCase)
-
-    private val viewModel: MainActivityViewModel by viewModels { viewModelfactory }
+    private lateinit var viewModel: MainActivityViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,6 +50,7 @@ class DetailFilmFragment : Fragment() {
     ): View {
         _binding = FragmentDetailFilmBinding.inflate(inflater, container, false)
 
+        viewModel = ViewModelProvider(requireActivity(), MainActivityViewModel.Factory(getFilmsUseCase, saveListFilmsInRoomUseCase, getFilmsRoomUseCase))[MainActivityViewModel::class.java]
         viewModel.context = requireContext()
         val itemSelected = viewModel.itemListFilmsClicked.value
 
